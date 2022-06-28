@@ -1,0 +1,7 @@
+
+[id: 1 nome: Francesco cognome: Totti genere: M
+, id: 2 nome: Bruno cognome: Conti genere: M
+, id: 3 nome: Paolo cognome: Falcao genere: M
+, id: 4 nome: Sabrina cognome: Ferilli genere: F
+, id: 5 nome: Anna cognome: Magnani genere: F
+]

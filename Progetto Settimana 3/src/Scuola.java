@@ -1,0 +1,86 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+import org.apache.commons.io.FileUtils;
+import java.io.File;
+import java.io.IOException;
+
+
+
+public class Scuola implements Runnable {
+
+   
+    private static final Logger logger = LoggerFactory.getLogger(Scuola.class);
+    private List<Studente> scuola;
+
+    
+    
+    
+    public Scuola(List<Studente> scuola) {
+        this.scuola = scuola;
+    }
+
+    public List<Studente> getScuola() {
+        return scuola;
+    }
+
+    public void setScuola(List<Studente> scuola) {
+        this.scuola = scuola;
+    }
+
+
+
+    public List<Studente> getPromossi() {
+        List<Studente> votiMat = new ArrayList<>();
+        Stream<Studente> promossi = getScuola().stream();
+        promossi.filter(el -> el.promosso()).forEach(votiMat::add);
+        if (votiMat.size() == 0) {
+            System.out.println("\n Tutti bocciati!");
+        } 
+        return votiMat;
+    }
+
+    
+    
+    
+    public List<Studente> getStudenti() {
+        return scuola;
+    }
+
+    
+    
+    
+    public Studente getStudenteMigliore() {
+        Stream<Studente> studenti = getStudenti().stream();
+        return studenti.reduce((max, stud) -> stud.mediaTotale() > max.mediaTotale() ? max = stud : max).get();
+    }
+
+    
+    public void salvaStudenti(File file) {
+        if (file.exists()) {
+            System.out.println();
+            try {
+                FileUtils.writeStringToFile(file, getStudenti().toString(), "UTF-8", true);
+            } catch (IOException e) {
+            }
+        } else {
+            System.out.println("File non trovato!");
+        }
+    }
+    
+    
+    @Override
+    public void run() {
+
+        for (Studente studente : getStudenti()) {
+            logger.info(studente.toString());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
